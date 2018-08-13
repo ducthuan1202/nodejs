@@ -32,7 +32,7 @@ npm install socket.io --save
 ```
 
 * Sử dụng (express không thể lắng nghe được socket nên cần sử dụng http)
-```javascript
+```js
 const app = express();
 const server = require('http').Server(app);
 const io = require('socket.io')(server);

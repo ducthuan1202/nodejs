@@ -1,22 +1,10 @@
-const mysql = require('mysql');
-
-const pool = mysql.createPool({
-    connectionLimit: 100,
-    host: 'localhost',
-    user: 'root',
-    password: '',
-    database: 'laravel_videos'
-});
-
-exports.connect = function () {
-    return pool;
-}
+const connectPool = global.connectPool;
 
 exports.getAll = function (req, res) {
 
     let queryString = 'SELECT * FROM categories';
 
-    pool.query(queryString, (error, results) => {
+    connectPool.query(queryString, (error, results) => {
         if (error) renderError(res);
         if (!results) renderEmpty(res);
 
@@ -37,10 +25,11 @@ exports.getAll = function (req, res) {
 }
 
 exports.getOne = function (id) {
+
     return new Promise((resolve, reject) => {
         let queryString = 'SELECT * FROM categories WHERE id=' + id + ' LIMIT 1';
 
-        pool.query(queryString, (error, results) => {
+        connectPool.query(queryString, (error, results) => {
             if (error) {
                 resolve(returnData(400, 'error', []));
             };
