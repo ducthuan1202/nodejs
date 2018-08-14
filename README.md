@@ -22,7 +22,19 @@ npm init
 npm install express mysql --save
 ```
 
-* Mở file package.json lên để xem thông tin của project.
+* Mở file `package.json` lên để xem thông tin của project.
+
+Thêm thuộc tính `start` vào trong `scripts` ở file `package.json`
+```js
+  "scripts": {
+    "start": "node index.js",    
+  },
+```
+
+Như vậy thì có thể chạy lệnh
+```sh
+npm start
+```
 
 # Cài đặt và sử dụng socket.io
 
