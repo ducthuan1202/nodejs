@@ -36,6 +36,16 @@ Như vậy thì có thể chạy lệnh
 npm start
 ```
 
+* Chú thích về cài đặt version package
+
+ syntax | Ý Nghĩa
+------------ | -------------
+ `*` | install package phiên bản mới nhất.
+ `~1.5.2` | install package phiên bản từ 1.5.0 đến 1.6.0 (1.5.x)
+ `^1.0.5` | install package version từ 1.0.5 đến <1.1.0
+ `>0.10.0` | install package version phải lớn hơn 0.10.0
+
+
 # Cài đặt và sử dụng socket.io
 
 * Cài đặt: 
