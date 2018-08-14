@@ -1,4 +1,5 @@
 const Response = require('./../render/Response');
+const reponse = new Response();
 
 const PRODUCTS = [
     { id: 1, name: 'Iphone 6s Gold 32Gb' },
@@ -6,16 +7,14 @@ const PRODUCTS = [
     { id: 3, name: 'Iphone 7 Gold 128Gb' },
 ];
 
-exports.list = function (req, res) {
-    const reponse = new Response();
-    let data = (!PRODUCTS) ?  reponse.empty() : reponse.success(PRODUCTS);    
+exports.list = (req, res) => {
+    const data = (!PRODUCTS) ? reponse.empty() : reponse.success(PRODUCTS);
     res.send(data);
 }
 
-exports.detail = function (req, res) {
-    const reponse = new Response();
+exports.detail = (req, res) => {
     const id = req.params.id;
     const product = PRODUCTS.find((item) => item.id == id);
-    let data = (!product) ?  reponse.empty() : reponse.success(product);    
+    const data = (!product) ? reponse.empty() : reponse.success(product);
     res.send(data);
 }

@@ -1,8 +1,3 @@
-/**
- * status: [success, error]
-code: [200, 404]
-message: [valid, invalid, No permission]
- */
 class Response {
 
     constructor() {
@@ -14,36 +9,33 @@ class Response {
         this.STATUS_ERROR = 'Error';
     }
 
-    returnData(message, status, data) {
-        const datetime = new Date();
-        const res = {
+    returnData(message, status, data = []) {
+        return {
             program: "Node JS",
             version: "1.0.0",
             release: 12,
             datetime: Date.now(),
-            timestamp: datetime.toJSON(),
+            timestamp: (new Date()).toJSON(),
             status: status,
             code: message.code,
             message: message.text,
             data: data
         };
-
-        return res;
     }
 
-    error(data = []) {
+    error(data) {
         return this.returnData(this.MSG_INVALID, this.STATUS_ERROR, data);
     }
 
-    empty(data = []) {
+    empty(data) {
         return this.returnData(this.MSG_INVALID, this.STATUS_ERROR, data);
     }
 
-    success(data = []) {
+    success(data) {
         return this.returnData(this.MSG_VALID, this.STATUS_SUCCESS, data);
     }
 
-    noPermission(data = []) {
+    noPermission(data) {
         return this.returnData(this.MSG_NO_PERMISSION, this.STATUS_ERROR, data);
     }
 }

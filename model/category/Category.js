@@ -1,7 +1,7 @@
 const Response = require('./../render/Response');
 const connectPool = global.connectPool;
 
-exports.getAll = function (req, res) {
+exports.getAll = (req, res) => {
     const reponse = new Response();
     let queryString = 'SELECT * FROM categories';
 
@@ -29,20 +29,20 @@ exports.getAll = function (req, res) {
                 updated_at: item.updated_at,
             });
         })
-        
+
         data = reponse.success(results);
         res.status(200).send(data);
     });
 }
 
-exports.getOne = function (id) {
+exports.getOne = (id) => {
 
     return new Promise((resolve, reject) => {
         let queryString = 'SELECT * FROM categories WHERE id=' + id + ' LIMIT 1';
 
         connectPool.query(queryString, (error, results) => {
-            if (error) resolve([]);            
-            if (!results) resolve([]);            
+            if (error) resolve([]);
+            if (!results) resolve([]);
 
             let categories = [];
             results.map((item) => {
