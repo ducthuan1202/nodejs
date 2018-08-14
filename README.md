@@ -36,7 +36,7 @@ Như vậy thì có thể chạy lệnh
 npm start
 ```
 
-* Chú thích về cài đặt version package
+## Chú thích về cài đặt version package
 
  syntax | Ý Nghĩa
 ------------ | -------------
@@ -53,30 +53,113 @@ npm start
 npm install socket.io --save
 ```
 
-* Sử dụng (express không thể lắng nghe được socket nên cần sử dụng http)
+* Ví dụ sử dụng socket tạo ứng dụng chat realtime
+file `app.js`:
+
 ```js
+const port = 1202;
+const hostname = '127.0.0.1';
+
+const express = require('express');
 const app = express();
 const server = require('http').Server(app);
 const io = require('socket.io')(server);
 
+let usersOnline = 0;
+
 // io connect
-io.on('connection', (socket) => {
-  socket.emit('greet', { hello: 'Hey there browser!' });
-  socket.on('respond', (data) => {
-    console.log(data);
-  });
-  socket.on('disconnect', () => {
-    console.log('Socket disconnected');
-  });
+io.on('connection', function (socket) {
+    usersOnline++;
+
+    // chat message
+    socket.on('chat message', (msg) => io.emit('chat message', msg));
+
+    // disconnect
+    socket.on('disconnect', () => usersOnline--);    
 });
 
-// router
-server.get('/', function(req, res){
-  res.send('<h1>Hello world</h1>');
-});
+http.listen(port, hostname, () => console.log(`Listener on http:${hostname}:${port}`));
+```
 
-server.listen(3000, function(){
-  console.log('listening on *:3000');
-});
+file `index.html`:
+```html
+<!doctype html>
+<html>
 
+<head>
+    <title>Socket.IO chat</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font: 13px Helvetica, Arial;
+        }
+
+        form {
+            background: #000;
+            padding: 3px;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+        }
+
+        form input {
+            border: 0;
+            padding: 10px;
+            width: 90%;
+            margin-right: .5%;
+        }
+
+        form button {
+            width: 9%;
+            background: rgb(130, 224, 255);
+            border: none;
+            padding: 10px;
+        }
+
+        #messages {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        #messages li {
+            padding: 5px 10px;
+        }
+
+        #messages li:nth-child(odd) {
+            background: #eee;
+        }
+    </style>
+</head>
+
+<body>
+    <ul id="messages"></ul>
+    <form action="/">
+        <input id="m" autocomplete="off" />
+        <button>Send</button>
+    </form>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script src="https://code.jquery.com/jquery-1.11.1.js"></script>
+    <script>
+        $(function () {
+            var socket = io();
+            $('form').submit(function () {
+                socket.emit('chat message', $('#m').val());
+                $('#m').val('');
+                return false;
+            });
+            socket.on('chat message', function (msg) {
+                $('#messages').append($('<li>').text(msg));
+            });
+        });
+    </script>
+</body>
+
+</html>
 ```
