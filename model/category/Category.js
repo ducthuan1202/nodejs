@@ -1,12 +1,21 @@
+const Response = require('./../render/Response');
 const connectPool = global.connectPool;
 
 exports.getAll = function (req, res) {
-
+    const reponse = new Response();
     let queryString = 'SELECT * FROM categories';
 
     connectPool.query(queryString, (error, results) => {
-        if (error) renderError(res);
-        if (!results) renderEmpty(res);
+        let data = {};
+        if (error) {
+            data = reponse.error();
+            res.status(404).send(data);
+        }
+
+        if (!results) {
+            data = reponse.empty();
+            res.status(200).send(data);
+        }
 
         let categories = [];
         results.map((item) => {
@@ -20,7 +29,9 @@ exports.getAll = function (req, res) {
                 updated_at: item.updated_at,
             });
         })
-        renderSuccess(res, categories);
+        
+        data = reponse.success(results);
+        res.status(200).send(data);
     });
 }
 
@@ -30,12 +41,8 @@ exports.getOne = function (id) {
         let queryString = 'SELECT * FROM categories WHERE id=' + id + ' LIMIT 1';
 
         connectPool.query(queryString, (error, results) => {
-            if (error) {
-                resolve(returnData(400, 'error', []));
-            };
-            if (!results) {
-                resolve(returnData(200, 'empty', []));
-            }
+            if (error) resolve([]);            
+            if (!results) resolve([]);            
 
             let categories = [];
             results.map((item) => {
@@ -49,41 +56,7 @@ exports.getOne = function (id) {
                     updated_at: item.updated_at,
                 });
             })
-
-            resolve(returnData(200, 'success', categories));
+            resolve(categories);
         });
-    })
-
-}
-
-/**
- * ***********************************************
- * Function 
- *************************************************
- */
-function returnData(status, message, data) {
-    return {
-        status: status,
-        message: message,
-        data: data
-    }
-}
-
-function render(res, data) {
-    res.send(data);
-}
-
-function renderError(res) {
-    const result = returnData(400, 'error', []);
-    render(res, result);
-}
-
-function renderEmpty(res) {
-    const result = returnData(200, 'empty', []);
-    render(res, result);
-}
-
-function renderSuccess(res, data) {
-    const result = returnData(200, 'success', data);
-    render(res, result);
+    });
 }

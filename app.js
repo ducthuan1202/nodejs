@@ -1,4 +1,7 @@
-const app = require('express')();
+const port = 1202;
+const hostname = '127.0.0.1';
+
+const app = require('express')()
 const http = require('http').Server(app);
 const io = require('socket.io')(http);
 let usersOnline = 0;
@@ -18,5 +21,4 @@ io.on('connection', function (socket) {
 
     console.log(`a user connected. Current users online ${usersOnline}`);
 });
-
-http.listen(3000, () => console.log('listening on *:3000'));
+http.listen(port, hostname, () => console.log(`Listener on http:${hostname}:${port}`));
