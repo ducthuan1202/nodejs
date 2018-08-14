@@ -67,6 +67,8 @@ const io = require('socket.io')(server);
 
 let usersOnline = 0;
 
+app.get('/', (req, res) => res.sendFile(__dirname + '/public/index.html'));
+
 // io connect
 io.on('connection', function (socket) {
     usersOnline++;
