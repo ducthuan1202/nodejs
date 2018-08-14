@@ -9,12 +9,12 @@ exports.getAll = (req, res) => {
         let data = {};
         if (error) {
             data = reponse.error();
-            res.status(404).send(data);
+            res.send(data);
         }
 
         if (!results) {
             data = reponse.empty();
-            res.status(200).send(data);
+            res.send(data);
         }
 
         let categories = [];
@@ -31,7 +31,7 @@ exports.getAll = (req, res) => {
         })
 
         data = reponse.success(results);
-        res.status(200).send(data);
+        res.send(data);
     });
 }
 

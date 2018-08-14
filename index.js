@@ -22,7 +22,7 @@ app.get('/', (req, res) => {
 
     const reponse = new Response();
     const result = reponse.success(queries);
-    res.status(200).send(result);
+    res.send(result);
 });
 
 // route products
@@ -37,12 +37,12 @@ app.get('/categories/:id', async (req, res) => {
 
     const reponse = new Response();
     const result = reponse.success(category);
-    res.status(200).send(result);
+    res.send(result);
 });
 
 // route 404 
 app.get('*', (req, res) => {
     const reponse = new Response();
     const result = reponse.error();
-    res.status(404).send(result);
+    res.send(result);
 });

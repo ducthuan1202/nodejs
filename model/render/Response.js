@@ -1,12 +1,21 @@
 class Response {
 
     constructor() {
-        this.MSG_VALID = { code: 200, text: 'Valid' };
-        this.MSG_INVALID = { code: 200, text: 'Invalid' };
-        this.MSG_NO_PERMISSION = { code: 200, text: 'No Permission' };
-
-        this.STATUS_SUCCESS = 'Success';
-        this.STATUS_ERROR = 'Error';
+        this.MSG = {
+            valid: {
+                code: 200, text: 'Valid'
+            },
+            invalid: {
+                code: 404, text: 'Invalid'
+            },
+            noPermission: {
+                code: 403, text: 'No Permission'
+            },
+        }
+        this.STATUS = {
+            success: 'Success',
+            error: 'Error'
+        }
     }
 
     returnData(message, status, data = []) {
@@ -24,19 +33,19 @@ class Response {
     }
 
     error(data) {
-        return this.returnData(this.MSG_INVALID, this.STATUS_ERROR, data);
+        return this.returnData(this.MSG.invalid, this.STATUS.error, data);
     }
 
     empty(data) {
-        return this.returnData(this.MSG_INVALID, this.STATUS_ERROR, data);
+        return this.returnData(this.MSG.valid, this.STATUS.success, data);
     }
 
     success(data) {
-        return this.returnData(this.MSG_VALID, this.STATUS_SUCCESS, data);
+        return this.returnData(this.MSG.valid, this.STATUS.success, data);
     }
 
     noPermission(data) {
-        return this.returnData(this.MSG_NO_PERMISSION, this.STATUS_ERROR, data);
+        return this.returnData(this.MSG.noPermission, this.STATUS.error, data);
     }
 }
 

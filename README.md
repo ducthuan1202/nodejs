@@ -26,9 +26,9 @@ npm install express mysql --save
 
 Thêm thuộc tính `start` vào trong `scripts` ở file `package.json`
 ```js
-  "scripts": {
-    "start": "node index.js",    
-  },
+"scripts": {
+  "start": "node index.js",    
+}
 ```
 
 Như vậy thì có thể chạy lệnh
