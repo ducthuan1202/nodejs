@@ -62,7 +62,7 @@ const hostname = '127.0.0.1';
 
 const express = require('express');
 const app = express();
-const server = require('http').Server(app);
+const http = require('http').Server(app);
 const io = require('socket.io')(server);
 
 let usersOnline = 0;
