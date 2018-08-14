@@ -15,7 +15,7 @@ app.get('/products', Product.list);
 app.get('/products/:id', Product.detail);
 
 app.get('/categories', Category.getAll);
-app.get('/categories/:id', async(req, res) => {
+app.get('/categories/:id', async (req, res) => {
     const id = req.params.id;
     const category = await Category.getOne(id);
     res.send(category);    
