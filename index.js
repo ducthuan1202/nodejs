@@ -25,6 +25,7 @@ app.get('/', (req, res) => {
 
     const reponse = new Response();
     const result = reponse.success(queries);
+    res.set('Access-Control-Allow-Origin','*');
     res.send(result);
 });
 
@@ -39,6 +40,7 @@ app.get('/categories/:id', async (req, res) => {
     const category = await Category.getOne(id);
     const reponse = new Response();
     const result = reponse.success(category);
+    res.set('Access-Control-Allow-Origin','*');
     res.send(result);
 });
 
@@ -65,6 +67,7 @@ app.get('/api', (req, res) => {
 app.get('*', (req, res) => {
     const reponse = new Response();
     const result = reponse.error();
+    res.set('Access-Control-Allow-Origin','*');
     res.send(result);
 });
 

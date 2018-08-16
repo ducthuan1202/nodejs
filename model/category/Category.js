@@ -30,7 +30,8 @@ exports.getAll = (req, res) => {
             });
         })
 
-        data = reponse.success(results);
+        data = reponse.success(categories);
+        res.set('Access-Control-Allow-Origin', '*');
         res.send(data);
     });
 }
@@ -44,9 +45,9 @@ exports.getOne = (id) => {
             if (error) resolve([]);
             if (!results) resolve([]);
 
-            let categories = [];
+            let categories = {};
             results.map((item) => {
-                categories.push({
+                categories = {
                     id: item.id,
                     title: item.title,
                     slug: item.slug,
@@ -54,7 +55,7 @@ exports.getOne = (id) => {
                     videos_count: item.videos_count,
                     created_at: item.created_at,
                     updated_at: item.updated_at,
-                });
+                };
             })
             resolve(categories);
         });
