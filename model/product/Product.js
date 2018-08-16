@@ -9,8 +9,6 @@ const PRODUCTS = [
 
 exports.list = (req, res) => {
     const data = (!PRODUCTS) ? reponse.empty() : reponse.success(PRODUCTS);
-    
-    res.set('Access-Control-Allow-Origin','*');
     res.send(data);
 }
 
@@ -18,7 +16,5 @@ exports.detail = (req, res) => {
     const id = req.params.id;
     const product = PRODUCTS.find((item) => item.id == id);
     const data = (!product) ? reponse.empty() : reponse.success(product);
-
-    res.set('Access-Control-Allow-Origin','*');
     res.send(data);
 }

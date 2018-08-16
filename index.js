@@ -22,10 +22,8 @@ app.use(middlewareSetCROS);
 // route home page
 app.get('/', (req, res) => {
     const queries = req.query;
-
     const reponse = new Response();
     const result = reponse.success(queries);
-    res.set('Access-Control-Allow-Origin','*');
     res.send(result);
 });
 
@@ -67,7 +65,6 @@ app.get('/api', (req, res) => {
 app.get('*', (req, res) => {
     const reponse = new Response();
     const result = reponse.error();
-    res.set('Access-Control-Allow-Origin','*');
     res.send(result);
 });
 
@@ -76,7 +73,7 @@ app.listen(port, hostname, () => console.log(`Listener on http:${hostname}:${por
 
 // function middleware
 function middlewareSetCROS(req, res, next) {
-    res.set('Access-Control-Allow-Origin', '*');
+    res.set('Access-Control-Allow-Origin','*');
     res.set('Author', 'Nguyen Duc Thuan');
     next();
 }

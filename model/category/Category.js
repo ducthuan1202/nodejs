@@ -31,7 +31,6 @@ exports.getAll = (req, res) => {
         })
 
         data = reponse.success(categories);
-        res.set('Access-Control-Allow-Origin', '*');
         res.send(data);
     });
 }
