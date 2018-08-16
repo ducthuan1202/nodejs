@@ -17,7 +17,14 @@ const Product = require('./model/product/Product');
 const Category = require('./model/category/Category');
 const Response = require('./model/render/Response');
 
-app.use(middlewareSetCROS);
+// middleware for all route
+app.use((req, res, next) => {
+    // thêm tham số cho request
+    req.csrf = 'nauht-cud-neyugn';
+    // set header
+    res.set('Access-Control-Allow-Origin', '*');
+    next();
+});
 
 // route home page
 app.get('/', (req, res) => {
@@ -38,11 +45,13 @@ app.get('/categories/:id', async (req, res) => {
     const category = await Category.getOne(id);
     const reponse = new Response();
     const result = reponse.success(category);
-    res.set('Access-Control-Allow-Origin','*');
     res.send(result);
 });
 
 app.get('/api', (req, res) => {
+
+    const csrf = req.csrf;
+    console.log(csrf);
 
     const options = {
         "method": "GET",
@@ -70,10 +79,3 @@ app.get('*', (req, res) => {
 
 // server listen
 app.listen(port, hostname, () => console.log(`Listener on http:${hostname}:${port}`));
-
-// function middleware
-function middlewareSetCROS(req, res, next) {
-    res.set('Access-Control-Allow-Origin','*');
-    res.set('Author', 'Nguyen Duc Thuan');
-    next();
-}
