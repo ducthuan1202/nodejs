@@ -11,39 +11,36 @@
 
 const fs = require('fs');
 const public = './public';
-let fileName = 'config.txt';
-let content = 'Log at ' + getTime();
-let fileConfigPath = `${public}/${fileName}`;
+const pathLogs = public + '/logs/2018/08';
 
-// read folder sync
-let folderContent = readFolder(public);
-console.log(folderContent);
+try {
 
-// check file
-if (checkFileExist(fileConfigPath)) {
-    let newFileName = 'cauhinh.txt';
-    renameFile(fileConfigPath, `${public}/${newFileName}`);
+    let path = (`${pathLogs}/` + Date.now() + `.txt`);
 
-    fileConfigPath = `${public}/${fileName}`;
-    appendFile(fileConfigPath, content);
-} else {
-    writeFile(fileConfigPath, content);
+    // kiểm tra file
+    if (!checkFileExist(path)) {
+        let folder = getFolderPath(path);
+
+        // nếu thư mục chưa tồn tại thì tạo thư mục
+        if (!checkFolderExist(folder)) {
+            createMultiLevelFolder(folder);
+        }
+
+        // tạo file
+        let content = 'Log at ' + getTime();
+        appendFile(path, content);
+
+    }
+} catch (e) {
+    console.log(e.message);
 }
 
-// read file sync
-let fileContent = readFile(fileConfigPath);
-console.log(fileContent);
-
-if(deleteFile(fileConfigPath)){
-    console.log(`đã xóa file ${fileConfigPath}`);
-} else {
-    console.log(`xóa file ${fileConfigPath} thất bại`);
-}
-
+/* get time string */
 function getTime() {
     return (new Date()).toString();
 }
 
+/* scan folder */
 function readFolder(path) {
     try {
         return {
@@ -58,6 +55,7 @@ function readFolder(path) {
     }
 }
 
+/* đọc nội dung đồng bộ */
 function readFile(path) {
     try {
         return {
@@ -72,6 +70,37 @@ function readFile(path) {
     }
 }
 
+function createFolder(path) {
+    try {
+        fs.mkdirSync(path);
+    } catch (e) {
+        return false;
+    }
+    return true;
+}
+
+function createMultiLevelFolder(path) {
+    const slug = path.split('/');
+    var pathRunning = [];
+
+    slug.forEach((item) => {
+        pathRunning.push(item);
+        let str = pathRunning.join('/');
+        (!checkFolderExist(str) && createFolder(str));
+    })
+}
+
+/* tạo 1 file trống đồng bộ */
+function createNewFileEmpty(path) {
+    try {
+        fs.openSync(path, 'w');
+    } catch (e) {
+        return false;
+    }
+    return true;
+}
+
+/* ghi nội dung file đồng bộ */
 function writeFile(path, content) {
     try {
         fs.writeFileSync(path, content);
@@ -81,6 +110,7 @@ function writeFile(path, content) {
     return false;
 }
 
+/* thêm nội dung vào file đồng bộ */
 function appendFile(path, content) {
     try {
         fs.appendFileSync(path, `\n${content}`);
@@ -90,6 +120,7 @@ function appendFile(path, content) {
     return true;
 }
 
+/* đổi tên file đồng bộ */
 function renameFile(path, newPath) {
     try {
         fs.renameSync(path, newPath);
@@ -100,7 +131,7 @@ function renameFile(path, newPath) {
 
 }
 
-
+/* xóa file đồng bộ */
 function deleteFile(path) {
     try {
         fs.unlinkSync(path);
@@ -111,6 +142,7 @@ function deleteFile(path) {
 
 }
 
+/* kiểm tra file tồn tại đồng bộ */
 function checkFileExist(path) {
     try {
         fs.statSync(path);
@@ -118,4 +150,21 @@ function checkFileExist(path) {
         return false;
     }
     return true;
+}
+
+/* kiểm tra thư mục tồn tại đồng bộ */
+function checkFolderExist(path) {
+    try {
+        return fs.existsSync(path);
+    } catch (e) {
+        return false;
+    }
+}
+
+/* get đường dẫn thư mục từ link file */
+function getFolderPath(path) {
+    let arr = path.split('/');
+    arr.splice(-1, 1);
+    path = arr.join('/');
+    return path;
 }
