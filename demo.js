@@ -86,6 +86,6 @@ Order.findOne({
             [Op.in]: [10123, 10124],
         }
     }
-}).then(order => {
+}).then(order => {    
     console.log(order.get('orderNumber'))
-})
+});
