@@ -20,7 +20,7 @@ const middlewareAddParamID = (req, res, next) => {
 
 const middlewareGetParamID = (req, res, next) => {
     const id = req.__NodeID__;
-    if(id< 0.5) next();
+    if (id < 0.5) next();
     else next(id);
 }
 

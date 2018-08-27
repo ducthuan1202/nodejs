@@ -1,4 +1,9 @@
-function date(format = 'd/m/y') {
+const twoChar = (n) => {
+    n = parseInt(n);
+    return (n < 10) ? `0${n}` : n;
+}
+
+module.exports = (format = 'd/m/y') => {
     var d = new Date(),
         year = twoChar(d.getFullYear()),
         month = twoChar(d.getMonth()) + 1,
@@ -14,12 +19,3 @@ function date(format = 'd/m/y') {
         .replace(/i/i, minute)
         .replace(/s/i, second);
 }
-
-function twoChar(n) {
-    n = parseInt(n);
-    return (n < 10) ? `0${n}` : n;
-}
-
-
-let str = date('Y, m/d h : i : s');
-console.log(str);
