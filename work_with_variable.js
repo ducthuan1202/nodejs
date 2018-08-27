@@ -57,3 +57,4 @@ console.log(id, name, price);
  */
 var { slug = 'not-found' } = data;
 console.log(slug);
+

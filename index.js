@@ -10,9 +10,6 @@ app.listen(3000,
 );
 
 app.get('/helo', (req, res) => {
-
-    
-
     res.send(`hello user`);
 });
 
