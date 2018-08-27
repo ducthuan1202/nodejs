@@ -8,7 +8,7 @@ const io = require('socket.io')(http);
 
 let usersOnline = 0;
 
-app.get('/', (req, res) => res.sendFile(__dirname + '/public/index.html'));
+app.get('/', (req, res) => res.sendFile(__dirname + '/public/socket.html'));
 
 // io connect
 io.on('connection', function (socket) {
