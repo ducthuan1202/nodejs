@@ -1,6 +1,9 @@
 const express = require('express');
 const app = express();
 
+/**
+ * Tất cả các 
+ */
 
 /** Config app listen */
 const { host, port } = {
@@ -20,7 +23,7 @@ const middlewareAddParamID = (req, res, next) => {
 
 const middlewareGetParamID = (req, res, next) => {
     const id = req.__NodeID__;
-    if (id < 0.5) next();
+    if(id< 0.5) next();
     else next(id);
 }
 

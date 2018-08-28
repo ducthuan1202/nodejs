@@ -1,62 +1,81 @@
+// dùng để đọc dữ liệu từ file .env
+require("dotenv").config();
+
+// khai báo thông tin port, hostname
+const port = 1202;
+const hostname = '127.0.0.1';
+
+// chèn file kết nối tới database dưới dạng global (sử dụng cho tất cả các package)
+global.connectPool = require('./model/mysql/ConnectPool');
+
+// chèn package express
 const express = require('express');
 const app = express();
 
-const ROUTERS = {
-    USER_DETAIL: '/user/:userID'
-}
+// my modules
+const Response = require('./model/render/Response');
+const Product = require('./model/product/Product');
+const Category = require('./model/category/Category');
+const XHR = require('./model/request/Xhr');
 
-app.listen(3000,
-    () => console.log(`NodeJS server started: <http://127.0.0.1:3000>`)
-);
+/******************************
+ * Middleware 
+ *****************************/
+app.use((req, res, next) => {
+    // thêm tham số cho request
+    req.csrf = 'nauht-cud-neyugn';
 
-app.get('/helo', (req, res) => {
-    res.send(`hello user`);
-});
-
-//////////////////////////////////////////////
-
-app.use(ROUTERS.USER_DETAIL, (req, res, next) => {
-
-    const userID = req.params.userID;
-
-    // nếu userID chứa ký tự không phải là số
-    if (/[^0-9\-]/.test(userID)) {
-        let result = renderRes(200, 'userID phải là 1 số nguyên');
-        return res.status(200).send(result);
-    }
-
-    if (parseInt(userID) < 1) {
-        let result = renderRes(200, 'userID phải lớn hơn 1');
-        return res.status(200).send(result);
-    }
-
-    if (parseInt(userID) > 100) {
-        let result = renderRes(200, 'userID phải nhỏ hơn 100');
-        return res.status(200).send(result);
-    }
-
-    req.userName = 'Duc Thuan';
+    res.header('Access-Control-Allow-Origin', '*');
+    res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept');
     next();
+    
+    app.options('*', (req, res) => {
+        // allowed XHR methods 
+        res.header('Access-Control-Allow-Methods', 'GET, PATCH, PUT, POST, DELETE, OPTIONS');
+        res.send();
+    })
 });
 
-app.get(ROUTERS.USER_DETAIL, (req, res) => {
-    const userName = req.userName;
-    let result = renderRes(200, `userID hợp lệ => userName ${userName}`);
-    res.status(200).send(result);
+/******************************
+ * Route
+ *****************************/
+app.get('/', (req, res) => {
+    const queries = req.query;
+    const reponse = new Response();
+    const result = reponse.success(queries);
+    res.send(result);
 });
 
-app.use((req, res) => {
-    let result = renderRes(404, `page not found`);
-    res.status(404).send(result);
-})
+// products
+app.get('/products', Product.list);
+app.get('/products/:id', Product.detail);
 
-/**
- * Sử dụng middleware để kiểm tra giá trị id truyền vào trên link: /user/:userID
- * - Nếu là số và nhỏ hơn 1 thì trả ra lỗi
- * - Nếu không phải là số thì trả ra lỗi
- * - Nếu là số và lớn hơn 1000 thì trả ra lỗi
- */
+// categories
+app.get('/categories', Category.getAll);
+app.get('/categories/:id', async (req, res) => {
+    const id = req.params.id;
+    const category = await Category.getOne(id);
+    const reponse = new Response();
+    const result = reponse.success(category);
+    res.send(result);
+});
 
-var renderRes = (code = 200, msg = '') => {
-    return { code, msg };
-}
+// api
+app.get('/api', XHR.get);
+
+// 404 
+app.get('*', (req, res) => {
+
+    const csrf = req.csrf;
+    console.log(csrf);
+
+    const reponse = new Response();
+    const result = reponse.error();
+    res.send(result);
+});
+
+/******************************
+ * server listen 
+ *****************************/
+app.listen(port, hostname, () => console.log(`Listener on http:${hostname}:${port}`));
+
