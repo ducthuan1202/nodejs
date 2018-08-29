@@ -69,6 +69,7 @@ const checkFileType = (file, cb) => {
 }
 
 
+
 // set kiểu file engine và thư mục chứa
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, PATHS.VIEWS));

@@ -1,3 +1,18 @@
+# Phím tắt Studio Visual Code
+
+Phím Tắt | Chức Năng | Ghi Chú
+---|---|---
+ `Ctrl B` | toggle sidebar |
+ `Ctrl J` | toggle panel bottom |
+ `Ctrl F` | search |
+ `Ctrl D` | chọn từ ở vị trí con trỏ |
+ `Alt Shift <-` | chọn 1 dòng ở vị trí con trỏ |
+ `Ctrl +` | phóng to |
+ `Ctrl -` | thu nhỏ |
+ `Ctrl Ins` | tắt thu phóng |
+ `Ctrl K` `Ctrl S` | mở bằng phím tắt |
+ `Alt Shift R` | mở thư mục ở file, folder đang đc chọn |
+
 # Hướng dẫn tạo project với NODEJS
 
 * Tạo thư mục chứa project
