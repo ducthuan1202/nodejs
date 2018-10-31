@@ -12,6 +12,7 @@ Phím Tắt | Chức Năng | Ghi Chú
  `Ctrl Ins` | tắt thu phóng |
  `Ctrl K` `Ctrl S` | mở bằng phím tắt |
  `Alt Shift R` | mở thư mục ở file, folder đang đc chọn |
+ 
 
 # Hướng dẫn tạo project với NODEJS
 

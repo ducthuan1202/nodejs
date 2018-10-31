@@ -32,7 +32,6 @@ app.use(session({
 }));
 app.use(flash());
 
-
 // cấu hình multer lưu trữ file
 const storage = multer.diskStorage({
     destination: path.join(__dirname, PATHS.PUBLIC, PATHS.UPLOADS),
@@ -45,7 +44,6 @@ const storage = multer.diskStorage({
     }
 });
 
-
 // cấu hình upload, có kiểm tra limit size và kiểu file
 const upload = multer({
     storage: storage,
@@ -53,10 +51,9 @@ const upload = multer({
     fileFilter: (req, file, cb) => checkFileType(file, cb)
 }).single('myImage');
 
-
-
 // hàm kiểm tra input file
 const checkFileType = (file, cb) => {
+
     const filetypes = /jpeg|jpg|png|gif/;
     const extname = filetypes.test(path.extname(file.originalname).toLowerCase());
     const mimetype = filetypes.test(file.mimetype);
@@ -68,8 +65,6 @@ const checkFileType = (file, cb) => {
     }
 }
 
-
-
 // set kiểu file engine và thư mục chứa
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, PATHS.VIEWS));
@@ -77,15 +72,12 @@ app.set('views', path.join(__dirname, PATHS.VIEWS));
 // khai báo thư mục public chứa tài nguyên tĩnh
 app.use(express.static(path.join(__dirname, PATHS.PUBLIC)));
 
-
-
 // đường dẫn 
 app.get('/', (req, res) => {
     const
         success = req.flash('success'),
         message = req.flash('message'),
         file = req.flash('file');
-        
 
     res.render('form-upload', { success, message, file })
 });
@@ -93,6 +85,7 @@ app.get('/', (req, res) => {
 app.post('/', (req, res) => {
 
     upload(req, res, (err) => {
+        console.log(req.files);
 
         // nếu có lỗi
         if (err) {
@@ -119,7 +112,6 @@ app.post('/', (req, res) => {
     }); // kết thúc hàm upload
 
 });
-
 
 
 // cấu hình
